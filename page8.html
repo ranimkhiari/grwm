@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon Panier - GRWM</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #fceff4;
+    color: #6b3e2e;
+    margin: 0;
+    padding: 30px;
+}
+
+/* --- AJOUT POUR LE LOGO --- */
+header {
+    position: absolute;
+    top: 0px;   /* COLLÉ EN HAUT */
+    left: 0px;  /* COLLÉ À GAUCHE */
+}
+header img {
+    width: 120px;
+    height: auto;
+}
+/* ------------------------- */
+
+h1 {
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+th, td {
+    padding: 15px;
+    text-align: center;
+    vertical-align: middle;
+}
+th {
+    background-color: #6b3e2e;
+    color: white;
+    font-weight: bold;
+}
+tr:nth-child(even) {
+    background-color: #f9e5ec;
+}
+tfoot td {
+    font-weight: bold;
+    font-size: 18px;
+}
+.qty-btn {
+    padding: 5px 10px;
+    margin: 0 5px;
+    background-color: #6b3e2e;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.qty-input {
+    width: 40px;
+    text-align: center;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.product-img {
+    width: 60px;
+    height: auto;
+    border-radius: 5px;
+}
+.final-btn {
+    margin-top: 25px;
+    display: block;
+    width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 12px 28px;
+    font-size: 18px;
+    border: none;
+    border-radius: 25px;
+    background-color: #6b3e2e;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.final-btn:hover {
+    background-color: #8c5240;
+}
+</style>
+</head>
+<body>
+
+<!-- AJOUT DU LOGO -->
+<header>
+    <img src="grwm.png" alt="Logo GRWM">
+</header>
+<!-- ---------------- -->
+
+<h1>Récapitulatif de votre commande</h1>
+
+<table id="cartTable">
+    <thead>
+        <tr>
+            <th>Produit</th>
+            <th>Image</th>
+            <th>Quantité</th>
+            <th>Prix Unitaire</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4">Frais de livraison</td>
+            <td id="shippingCost">10 DT</td>
+        </tr>
+        <tr>
+            <td colspan="4">Total</td>
+            <td id="totalCost">0 DT</td>
+        </tr>
+    </tfoot>
+</table>
+
+<button class="final-btn" onclick="finalizeOrder()">Finaliser la commande</button>
+
+<script>
+const shipping = 10;
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+const tbody = document.querySelector("#cartTable tbody");
+
+cart.forEach((prod, index) => {
+    if(prod.qty > 0){
+        const row = document.createElement("tr");
+        row.id = "row" + index;
+        row.innerHTML = `
+    <td>${prod.name}</td>
+    <td><img src="${prod.img}" alt="${prod.name}" class="product-img"></td>
+    <td>
+        <button class="qty-btn" onclick="changeQtyCart(${index}, -1)">−</button>
+        <input type="text" id="qtyInput${index}" class="qty-input" value="${prod.qty}" readonly>
+        <button class="qty-btn" onclick="changeQtyCart(${index}, 1)">+</button>
+    </td>
+    <td>${prod.price} DT</td>
+    <td id="totalProd${index}">${prod.qty * prod.price} DT</td>
+`;
+        tbody.appendChild(row);
+    }
+});
+
+function updateTotals() {
+    let total = 0;
+    cart.forEach(prod => total += prod.qty * prod.price);
+    document.getElementById("totalCost").textContent = (total + shipping) + " DT";
+}
+
+function changeQtyCart(index, delta) {
+    cart[index].qty += delta;
+    if(cart[index].qty < 0) cart[index].qty = 0;
+    document.getElementById("qtyInput" + index).value = cart[index].qty;
+    document.getElementById("totalProd" + index).textContent = (cart[index].qty * cart[index].price) + " DT";
+
+    if(cart[index].qty === 0){
+        document.getElementById("row" + index).remove();
+    }
+
+    updateTotals();
+    localStorage.setItem('cart', JSON.stringify(cart.filter(p => p.qty > 0)));
+}
+
+updateTotals();
+
+function finalizeOrder() {
+    if(cart.length === 0){
+        alert("Votre panier est vide !");
+        return;
+    }
+
+    const total = cart.reduce((sum,p) => sum + p.qty * p.price, 0) + shipping;
+    alert("Merci pour votre commande !\nTotal : " + total + " DT");
+
+    localStorage.setItem('totalCommande', total);
+    localStorage.removeItem('cart');
+    window.location.href = 'page9.html';
+}
+</script>
+
+</body>
+</html>

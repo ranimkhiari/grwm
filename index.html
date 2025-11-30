@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GRWM - Accueil</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color:#f8e8ee; /* Couleur de fond simple */
+        }
+
+        .logo, .phrase, .btn {
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .phrase {
+            font-size: 24px;
+            color: #6b3e2e;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .btn {
+            background: #6b3e2e;
+            color: #fff;
+            padding: 12px 28px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #8c5240;
+        }
+    </style>
+</head>
+<body>
+    <img src="grwm.png" alt="Logo GRWM" class="logo">
+    <div class="phrase">Votre routine beauté personnalisée commence ici</div>
+    <button class="btn" onclick="goNext()">Suivant</button>
+
+    <script>
+        function goNext() {
+            window.location.href = 'page2.html';
+        }
+    </script>
+</body>
+</html>

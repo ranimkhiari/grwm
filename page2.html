@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GRWM - À propos de vous</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f8e8ee; /* rose bébé léger */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 100px; /* pour laisser la place au logo */
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Logo en haut à gauche */
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 120px; /* ajustez selon le logo */
+            height: auto;
+        }
+
+        h2 {
+            color: #6b3e2e; /* marron */
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 300px;
+        }
+
+        label {
+            margin-bottom: 5px;
+            color: #6b3e2e;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="email"] {
+            padding: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .skin-type {
+            margin-bottom: 20px;
+        }
+
+        .skin-type label {
+            font-weight: normal;
+            margin-left: 5px;
+        }
+
+        .btn {
+            background: #6b3e2e;
+            color: #fff;
+            padding: 12px 28px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #8c5240;
+        }
+
+        @media (max-width: 700px) {
+            body {
+                padding-top: 150px;
+            }
+
+            .logo {
+                top: 10px;
+                left: 10px;
+                width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo en haut à gauche -->
+    <img src="grwm.png" alt="Logo GRWM" class="logo">
+
+    <h2>Parlez-nous de vous</h2>
+
+    <form id="userForm">
+        <label for="nom">Nom :</label>
+        <input type="text" id="nom" name="nom" required>
+
+        <label for="prenom">Prénom :</label>
+        <input type="text" id="prenom" name="prenom" required>
+
+        <label>Type de peau :</label>
+        <div class="skin-type">
+            <input type="radio" id="sec" name="type_peau" value="Sec" required>
+            <label for="sec">Sec</label><br>
+
+            <input type="radio" id="gras" name="type_peau" value="Gras">
+            <label for="gras">Gras</label><br>
+
+            <input type="radio" id="mixte" name="type_peau" value="Mixte">
+            <label for="mixte">Mixte</label>
+        </div>
+
+        <label for="email">Email :</label>
+        <input type="email" id="email" name="email" required>
+
+        <button type="submit" class="btn">Suivant</button>
+    </form>
+
+    <script>
+        document.getElementById('userForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nom = document.getElementById('nom').value;
+            const prenom = document.getElementById('prenom').value;
+            const email = document.getElementById('email').value;
+            const typePeau = document.querySelector('input[name="type_peau"]:checked')?.value;
+
+            if(!typePeau) {
+                alert('Veuillez sélectionner un type de peau.');
+                return;
+            }
+
+            // Stocker les données dans localStorage
+            localStorage.setItem('userInfo', JSON.stringify({nom, prenom, email, typePeau}));
+
+            // Redirection vers la page 3
+            window.location.href = 'page3.html';
+        });
+    </script>
+</body>
+</html>

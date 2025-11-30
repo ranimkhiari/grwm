@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pack Moody Meltdown</title>
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #fceff4;
+        margin: 0;
+        padding: 30px;
+        color: #5a3d2b;
+    }
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .logo {
+        width: 120px;
+        height: auto;
+    }
+
+    .cart {
+        position: relative;
+        cursor: pointer;
+        font-size: 24px;
+    }
+
+    .cart-count {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        background: #5a3d2b;
+        color: white;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    h1 {
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 40px;
+    }
+
+    .products-row {
+        display: flex;
+        justify-content: center;
+        flex-wrap: nowrap;
+        gap: 25px;
+    }
+
+    .product-card {
+        background: white;
+        width: 250px;
+        border-radius: 18px;
+        padding: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        text-align: center;
+        border: 2px solid #e5d0d8;
+    }
+
+    .product-card img {
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    .product-name {
+        font-weight: bold;
+        font-size: 18px;
+        margin-top: 10px;
+    }
+
+    .price {
+        font-size: 17px;
+        font-weight: bold;
+        margin: 8px 0;
+        color: #8b5e3c;
+    }
+
+    .qty-box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        margin: 10px 0;
+    }
+
+    .qty-box button {
+        background: #e8b8c8;
+        border: none;
+        font-size: 18px;
+        padding: 5px 12px;
+        border-radius: 10px;
+        cursor: pointer;
+        color: #5a3d2b;
+        font-weight: bold;
+    }
+
+    .qty {
+        font-size: 18px;
+        width: 30px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .add-btn {
+        margin-top: 10px;
+        padding: 10px 15px;
+        background-color: #5a3d2b;
+        color: white;
+        border-radius: 12px;
+        font-weight: bold;
+        cursor: pointer;
+        border: none;
+    }
+
+    .add-btn:hover {
+        background-color: #8b5e3c;
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <img src="grwm.png" alt="Logo GRWM" class="logo">
+    <div class="cart" onclick="goToCart()">
+        🛒
+        <div id="cartCount" class="cart-count">0</div>
+    </div>
+</header>
+
+<h1>Produits – Pack Moody Meltdown 😮‍💨</h1>
+
+<div class="products-row">
+
+    <!-- Produit 1 -->
+    <div class="product-card">
+        <img src="bright-eyed-beauty.jpg" alt="Bright-Eyed Beauty">
+        <div class="product-name">Bright-Eyed Beauty</div>
+        <div class="price" data-price="175">175 DT</div>
+
+        <div class="qty-box">
+            <button onclick="changeQty('qty1', -1)">−</button>
+            <div id="qty1" class="qty">0</div>
+            <button onclick="changeQty('qty1', 1)">+</button>
+        </div>
+
+        <button class="add-btn" onclick="addToCart(1)">Ajouter au panier</button>
+    </div>
+
+    <!-- Produit 2 -->
+    <div class="product-card">
+        <img src="dream-skin-dew.jpg" alt="Dream Skin Dew">
+        <div class="product-name">Dream Skin Dew</div>
+        <div class="price" data-price="150">150 DT</div>
+
+        <div class="qty-box">
+            <button onclick="changeQty('qty2', -1)">−</button>
+            <div id="qty2" class="qty">0</div>
+            <button onclick="changeQty('qty2', 1)">+</button>
+        </div>
+
+        <button class="add-btn" onclick="addToCart(2)">Ajouter au panier</button>
+    </div>
+
+    <!-- Produit 3 -->
+    <div class="product-card">
+        <img src="snooze&smooth.jpg" alt="Snooze & Smooth">
+        <div class="product-name">Snooze & Smooth</div>
+        <div class="price" data-price="55">55 DT</div>
+
+        <div class="qty-box">
+            <button onclick="changeQty('qty3', -1)">−</button>
+            <div id="qty3" class="qty">0</div>
+            <button onclick="changeQty('qty3', 1)">+</button>
+        </div>
+
+        <button class="add-btn" onclick="addToCart(3)">Ajouter au panier</button>
+    </div>
+
+</div>
+
+<script>
+let cartCount = 0;
+
+const products = [
+    {id:1, name:"Eye-Need-a-Break",      price:175, img:"eye-need-a-break.jpg"},
+    {id:2, name:"Chill Pill Glow Mask",  price:150, img:"chill-pill-glow-mask.jpg"},
+    {id:3, name:"Drama-Free Lips",       price:55,  img:"drama-free-lips.jpg"}
+];
+
+
+function changeQty(id, amount) {
+    let element = document.getElementById(id);
+    let value = parseInt(element.textContent);
+    value = value + amount;
+    if(value < 0) value = 0;
+    element.textContent = value;
+}
+
+function addToCart(id) {
+    let qty = parseInt(document.getElementById("qty" + id).textContent);
+    if (qty > 0) {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const product = products.find(p => p.id === id);
+
+        const existing = cart.find(p => p.id === id);
+        if (existing) {
+            existing.qty += qty;
+        } else {
+            // on garde aussi l'image
+            cart.push({
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                img: product.img,
+                qty: qty
+            });
+        }
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+
+        cartCount += qty;
+        document.getElementById("cartCount").textContent = cartCount;
+        alert(qty + " produit(s) ajouté(s) au panier !");
+    } else {
+        alert("Veuillez sélectionner une quantité avant d'ajouter au panier.");
+    }
+}
+
+
+function goToCart(){
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    if(cart.length>0){
+        window.location.href="page8.html";
+    } else {
+        alert("Votre panier est vide !");
+    }
+}
+
+// Initialiser compteur si déjà dans le localStorage
+const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+if(existingCart.length>0){
+    let totalQty = existingCart.reduce((sum,p)=>sum+p.qty,0);
+    cartCount = totalQty;
+    document.getElementById("cartCount").textContent = cartCount;
+}
+</script>
+
+</body>
+</html>

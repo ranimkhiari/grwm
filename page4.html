@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pack Drama Queen - Produits</title>
+<style>
+    body {
+        margin: 0;
+        padding: 25px;
+        font-family: Arial, sans-serif;
+        background-color: #f8e8ee; /* rose bébé */
+        color: #6b3e2e; /* marron */
+    }
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .logo {
+        width: 120px;
+        height: auto;
+    }
+
+    .cart {
+        position: relative;
+        cursor: pointer;
+        font-size: 24px;
+    }
+
+    .cart-count {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        background: #6b3e2e;
+        color: white;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 32px;
+        font-weight: bold;
+        margin-bottom: 40px;
+    }
+
+    .products-container {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        flex-wrap: nowrap;
+    }
+
+    .product-card {
+        background: white;
+        width: 230px;
+        padding: 18px;
+        border-radius: 18px;
+        text-align: center;
+        box-shadow: 0px 2px 10px rgba(0,0,0,0.15);
+    }
+
+    .product-card img {
+        width: 150px;
+        height: auto;
+        margin-bottom: 10px;
+    }
+
+    .product-name {
+        font-weight: bold;
+        font-size: 18px;
+        margin-bottom: 6px;
+    }
+
+    .price {
+        font-size: 17px;
+        margin-bottom: 15px;
+        color: #8c5240;
+    }
+
+    .qty-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .qty-btn {
+        background-color: #6b3e2e;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .qty {
+        font-size: 18px;
+        width: 30px;
+        text-align: center;
+    }
+
+    .add-btn {
+        background-color: #8c5240;
+        color: white;
+        border: none;
+        padding: 10px 18px;
+        border-radius: 20px;
+        cursor: pointer;
+        margin-top: 5px;
+        font-size: 15px;
+    }
+
+    .add-btn:hover {
+        background-color: #6b3e2e;
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <img src="grwm.png" alt="Logo GRWM" class="logo">
+    <div class="cart" onclick="goToCart()">
+        🛒
+        <div id="cartCount" class="cart-count">0</div>
+    </div>
+</header>
+
+<h1>Pack Drama Queen</h1>
+
+<div class="products-container">
+
+    <!-- Produit 1 -->
+    <div class="product-card">
+        <img src="eye-need-a-break.jpg" alt="Serum">
+        <div class="product-name">Eye-Need-a-Break</div>
+        <div class="price" data-price="175">175 DT</div>
+
+        <div class="qty-container">
+            <button class="qty-btn" onclick="changeQty(1, -1)">−</button>
+            <span id="qty1" class="qty">0</span>
+            <button class="qty-btn" onclick="changeQty(1, 1)">+</button>
+        </div>
+
+        <button class="add-btn" onclick="addToCart(1)">Ajouter au panier</button>
+    </div>
+
+    <!-- Produit 2 -->
+    <div class="product-card">
+        <img src="chill-pill-glow-mask.jpg" alt="Glow Mask">
+        <div class="product-name">Chill Pill Glow Mask</div>
+        <div class="price" data-price="150">150 DT</div>
+
+        <div class="qty-container">
+            <button class="qty-btn" onclick="changeQty(2, -1)">−</button>
+            <span id="qty2" class="qty">0</span>
+            <button class="qty-btn" onclick="changeQty(2, 1)">+</button>
+        </div>
+
+        <button class="add-btn" onclick="addToCart(2)">Ajouter au panier</button>
+    </div>
+
+    <!-- Produit 3 -->
+    <div class="product-card">
+        <img src="drama-free-lips.jpg" alt="Drama Free Lips">
+        <div class="product-name">Drama-Free Lips</div>
+        <div class="price" data-price="55">55 DT</div>
+
+        <div class="qty-container">
+            <button class="qty-btn" onclick="changeQty(3, -1)">−</button>
+            <span id="qty3" class="qty">0</span>
+            <button class="qty-btn" onclick="changeQty(3, 1)">+</button>
+        </div>
+
+        <button class="add-btn" onclick="addToCart(3)">Ajouter au panier</button>
+    </div>
+
+</div>
+
+<script>
+    let cartCount = 0;
+
+    // Créer un tableau des produits pour stocker dans localStorage
+    const products = [
+    {id:1, name:"Eye-Need-a-Break",      price:175, img:"eye-need-a-break.jpg"},
+    {id:2, name:"Chill Pill Glow Mask",  price:150, img:"chill-pill-glow-mask.jpg"},
+    {id:3, name:"Drama-Free Lips",       price:55,  img:"drama-free-lips.jpg"}
+];
+
+
+    function changeQty(id, value) {
+        let span = document.getElementById("qty" + id);
+        let current = parseInt(span.textContent);
+        let newValue = current + value;
+        if(newValue >= 0) span.textContent = newValue;
+    }
+
+    function addToCart(id) {
+    let qty = parseInt(document.getElementById("qty" + id).textContent);
+    if (qty > 0) {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const product = products.find(p => p.id === id);
+
+        const existing = cart.find(p => p.id === id);
+        if (existing) {
+            existing.qty += qty;
+        } else {
+            // on garde aussi l'image
+            cart.push({
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                img: product.img,
+                qty: qty
+            });
+        }
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+
+        cartCount += qty;
+        document.getElementById("cartCount").textContent = cartCount;
+        alert(qty + " produit(s) ajouté(s) au panier !");
+    } else {
+        alert("Veuillez sélectionner une quantité avant d'ajouter au panier.");
+    }
+}
+
+
+    function goToCart(){
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        if(cart.length > 0){
+            window.location.href = "page8.html";
+        } else {
+            alert("Votre panier est vide !");
+        }
+    }
+
+    // Initialiser le compteur si déjà dans le localStorage
+    const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+    if(existingCart.length > 0){
+        let totalQty = existingCart.reduce((sum, p)=>sum+p.qty,0);
+        cartCount = totalQty;
+        document.getElementById("cartCount").textContent = cartCount;
+    }
+</script>
+
+</body>
+</html>

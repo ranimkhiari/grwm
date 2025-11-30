@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GRWM - Mood</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: #f8e8ee;
+        }
+
+        /* Header pour afficher le logo en haut à gauche */
+        header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        header img {
+            width: 120px;
+            height: auto;
+        }
+
+        h2 {
+            font-weight: bold;
+            font-size: 28px;
+            color: #6b3e2e;
+            margin-bottom: 40px;
+        }
+
+        .mood-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .mood-button {
+            font-weight: bold;
+            font-size: 20px;
+            padding: 15px 25px;
+            border-radius: 15px;
+            border: 2px solid #6b3e2e;
+            background: #fff;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .mood-button:hover {
+            background: #6b3e2e;
+            color: #fff;
+        }
+
+        .selected {
+            background: #6b3e2e;
+            color: #fff;
+        }
+
+        .btn-next {
+            margin-top: 30px;
+            padding: 12px 28px;
+            font-size: 18px;
+            border: none;
+            border-radius: 25px;
+            background: #6b3e2e;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-next:hover {
+            background: #8c5240;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header avec logo -->
+    <header>
+        <img src="grwm.png" alt="Logo GRWM">
+    </header>
+
+    <h2>Comment vous sentez-vous aujourd'hui ?</h2>
+
+    <div class="mood-container">
+        <button class="mood-button" data-mood="Drama Queen">Drama Queen 😤</button>
+        <button class="mood-button" data-mood="Sleepyhead">Sleepyhead 😥</button>
+        <button class="mood-button" data-mood="Moody Meltdown">Moody Meltdown 😴</button>
+        <button class="mood-button" data-mood="Glow Gone">Glow Gone 🕯️</button>
+    </div>
+
+    <button class="btn-next" id="nextBtn">Suivant</button>
+
+    <script>
+        const moodButtons = document.querySelectorAll('.mood-button');
+        let selectedMood = null;
+
+        moodButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                moodButtons.forEach(btn => btn.classList.remove('selected'));
+                button.classList.add('selected');
+                selectedMood = button.dataset.mood;
+                localStorage.setItem('mood', selectedMood);
+            });
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if(!selectedMood) {
+                alert('Veuillez sélectionner un mood avant de continuer.');
+                return;
+            }
+
+            switch(selectedMood) {
+                case 'Drama Queen':
+                    window.location.href = 'page4.html';
+                    break;
+                case 'Sleepyhead':
+                    window.location.href = 'page5.html';
+                    break;
+                case 'Moody Meltdown':
+                    window.location.href = 'page6.html';
+                    break;
+                case 'Glow Gone':
+                    window.location.href = 'page7.html';
+                    break;
+                default:
+                    alert('Mood non reconnu !');
+                    break;
+            }
+        });
+    </script>
+
+</body>
+</html>
